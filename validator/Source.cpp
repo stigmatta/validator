@@ -33,6 +33,7 @@ bool html_validator(const char* path, int& errors) {
                 if (!flag) {
                     if (open != ' ' && closed == ' ' || open == ' ' && closed != ' ')
                         errors++;
+                    flag = 0;
                 }
                 open = closed = ' ';
             }
