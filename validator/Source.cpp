@@ -6,6 +6,7 @@ bool html_validator(const char* path, int& errors) {
     ifstream in(path, ios::in);
     if (in.is_open()) {
         string line;
+        bool flag = 0;
         while (getline(in, line)) {
             if (line.empty()) {
                 continue;
@@ -20,13 +21,19 @@ bool html_validator(const char* path, int& errors) {
                     else if (line[i] == '>' && closed != '>')
                         closed = line[i];
                     else if (line[i] == '<' && open == '<' || line[i] == '>' && closed == '>')
+                    {
                         errors++;
+                        flag = 1;
+                        break;
+                    }
                     if (open == '<' && closed == '>')
                         open = closed = ' ';
                    
                 }
-                if (open != ' ' && closed == ' '||open==' '&&closed!=' ')
-                    errors++;
+                if (!flag) {
+                    if (open != ' ' && closed == ' ' || open == ' ' && closed != ' ')
+                        errors++;
+                }
                 open = closed = ' ';
             }
         }
